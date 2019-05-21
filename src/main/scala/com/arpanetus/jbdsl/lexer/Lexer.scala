@@ -72,27 +72,25 @@ object Lexer extends RegexParsers {
     "[a-zA-Z_][a-zA-Z0-9_]*".r ^^ { str => GENVAR(str) }
   }
 
-//  def toNum(str: String):Int = {
-//    case str:Int =>
-//    print()
-//      str.toInt
-
-//    case str:Double => str.toDouble
-//  }
-
   def value: Parser[VALUE] = positioned {
-    "[0-9_]+(\\.[0-9_]*)?".r ^^ { str =>
-//      val content = str.substring(1, str.length - 1)
-      val num = Integer.parseInt(str)
-//      num match {
-//        case _ : throws
-//      }
-      NUMBER(num)
+    integer | double | string
+  }
+
+  def integer: Parser[INTEGER] = positioned {
+    "[0-9_]+".r ^^ { str =>
+      INTEGER(str.toInt)
     }
-//    "\"[a-zA-Z_][a-zA-Z0-9_]*\"".r ^^ { str =>
-//      val content = str.substring(1, str.length - 1)
-//      STRING(content)
-//    }
+  }
+  def double: Parser[DOUBLE] = positioned {
+    "[0-9_]+(\\.[0-9_]*)?".r ^^ {
+      str => DOUBLE(str.toDouble)
+    }
+  }
+
+  def string: Parser[STRING] = positioned {
+    "\"[a-zA-Z_][a-zA-Z0-9_]*\"".r ^^ { str =>
+      STRING(str.substring(1, str.length - 1))
+    }
   }
 
 

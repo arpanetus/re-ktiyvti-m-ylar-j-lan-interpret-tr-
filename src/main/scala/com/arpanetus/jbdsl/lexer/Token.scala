@@ -13,9 +13,12 @@ case class VARIABLE(str: String) extends Token
 
 case class GENVAR(str: String) extends Token
 
-sealed trait VALUE extends Token
-case class NUMBER(num: Integer) extends VALUE
-case class STRING(str: String) extends VALUE
+trait VALUE extends Token {
+  def value: Any
+}
+case class INTEGER(value: Int) extends VALUE
+case class DOUBLE(value: Double) extends VALUE
+case class STRING(value: String) extends VALUE
 
 
 
